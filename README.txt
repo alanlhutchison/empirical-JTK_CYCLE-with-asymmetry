@@ -1,6 +1,6 @@
 Hi!
 
-This is the read-me for running the analysis described in Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, PLoS Computational Biology 2014 (in review).
+This is the read-me for running the analysis described in Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, 2014 (in review).
 
 The commands should be run in this order:
 
