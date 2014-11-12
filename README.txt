@@ -2,6 +2,10 @@ Hi!
 
 This is the read-me for running the analysis described in Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, 2014 (in review).
 
+It is based on the original JTK_CYCLE code from Hughes ME1, Hogenesch JB, Kornacker K. JTK_CYCLE: an efficient nonparametric algorithm for detecting rhythmic components in genome-scale data sets. J Biol Rhythms. 2010 Oct;25(5):372-80. doi: 10.1177/0748730410379711. 
+
+This implementation is in Python and shell script.
+
 The commands should be run in this order:
 
 jtk7.py
@@ -26,10 +30,4 @@ instead, you would need to recalculate the permutations.
 
 
 
-
-
-
-
-
-
-
+This code is released with the MIT License. See the License.txt file for more information.
