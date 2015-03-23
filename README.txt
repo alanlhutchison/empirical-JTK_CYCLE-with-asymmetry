@@ -1,6 +1,7 @@
 Hi!
 
-This is the read-me for running the analysis described in Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, 2014 (in review).
+This is the read-me for running the analysis described in Hutchison, Maienschein-Cline, and Chiang et al. (2015) Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data. PLoS Comput Biol 11(3):
+e1004094. doi:10.1371/journal.pcbi.1004094
 
 It is based on the original JTK_CYCLE code from Hughes ME, Hogenesch JB, Kornacker K. JTK_CYCLE: an efficient nonparametric algorithm for detecting rhythmic components in genome-scale data sets. J Biol Rhythms. 2010 Oct;25(5):372-80. doi: 10.1177/0748730410379711. 
 
