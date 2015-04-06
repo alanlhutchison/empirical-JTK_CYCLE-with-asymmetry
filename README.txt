@@ -29,6 +29,6 @@ then you could not use those permutations on this header:
 
 instead, you would need to recalculate the permutations.
 
-
+Currently, making permutations is the time-limiting step of the empirical calculation. To facilitate the use of empirical JTK, we have provided the null distributions for some time point sets suggested by users. If you are interested the null distribution for a particular set of time points, please contact the first author at alanlhutchison ...at... uchicago ...dot... edu. Please note that the headers are labeled with ZT, but will work equally well for CT time points. 
 
 This code is released with the MIT License. See the License.txt file for more information.
