@@ -387,7 +387,7 @@ def __create_parser__():
                           type=str,
                           metavar="filename string",
                           action='store',
-                          default="trough",
+                          default="cosine",
                           #choices=["wavform_cosine.txt","waveform_rampup.txt","waveform_rampdown.txt","waveform_step.txt","waveform_impulse.txt","waveform_trough.txt"],
                           help='Should be a file with asymmetries (widths) you wish to search for listed in a single column separated by newlines.\
                           Options include cosine (dflt), rampup, rampdown, impulse, step, trough')
