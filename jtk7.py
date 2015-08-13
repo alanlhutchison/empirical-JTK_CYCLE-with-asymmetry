@@ -388,9 +388,9 @@ def __create_parser__():
                           metavar="filename string",
                           action='store',
                           default="cosine",
-                          #choices=["wavform_cosine.txt","waveform_rampup.txt","waveform_rampdown.txt","waveform_step.txt","waveform_impulse.txt","waveform_trough.txt"],
+                          #choices=["waveform_cosine.txt","waveform_rampup.txt","waveform_rampdown.txt","waveform_step.txt","waveform_impulse.txt","waveform_trough.txt"],
                           help='Should be a file with waveforms  you wish to search for listed in a single column separated by newlines.\
-                          Options include cosine (dflt), rampup, rampdown, impulse, step, trough')
+                          Options include cosine (dflt), trough, impulse, step, rampup (deprecated), rampdown (deprecated)')
 
     analysis.add_argument("-w", "--width", "-a", "--asymmetry",
                           dest="width",
@@ -405,10 +405,10 @@ def __create_parser__():
                           dest="phase",
                           metavar="filename string",
                           type=str,
-                          default="phases_00-22.txt",
+                          default="phases_00-22_by2.txt",
                           #choices=["phases_00-22.txt","phases_00-22_by2.txt","phases_00-20.txt","phases_00-20_by4.txt"]
                           help='Should be a file with phases you wish to search for listed in a single column separated by newlines.\
-                          Provided files include "phases_00-22.txt" or "phases_00-22_by2.txt" or "phases_00-20.txt" or "phases_00-20_by4.txt"')
+                          Example files include "phases_00-22_by2.txt" or "phases_00-22_by4.txt" or "phases_00-20_by4.txt"')
 
     analysis.add_argument("-p","--period",
                           dest="period",
