@@ -32,7 +32,8 @@ def main():
     #print 'best_p'
     master = BH_correct(master,indx,thresh)
     #print 'bh_corrected'
-    fn_out = ".".join(fn.split(".")[0:-1])+"_{0}_lt{1}_min_empP.txt".format(field,thresh)
+    fn_out_temp = fn.split("/")[-1]
+    fn_out = "_".join(fn_out_temp.split(".")[0:-1])+"_{0}_lt{1}_min_empP.txt".format(field,thresh)
     write_out_1step(master,header,fn_out)
 
 def read_in(fn):

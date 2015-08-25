@@ -326,7 +326,7 @@ def generate_mod_series(reference,series,RealKen):
         if not np.isnan(tau):
             if len(mod_values) < 150:
                 pk = RealKen.pval(tau,len(mod_values))
-                if pk!=None:
+                if pk is not None:
                     p=pk
             else:
                 p = p / 2.0
@@ -400,7 +400,7 @@ def __create_parser__():
                           default="widths_02-22.txt",
                           #choices=["widths_02-22.txt","widths_04-20_by4.txt","widths_04-12-20.txt","widths_08-16.txt","width_12.txt"]
                           help='Should be a file with asymmetries (widths) you wish to search for listed in a single column separated by newlines.\
-                          Provided files include "widths_02-22.txt","widths_04-20_by4.txt","widths_04-12-20.txt","widths_08-16.txt","width_12.txt"')
+                          Provided files include files like "widths_02-22.txt","widths_04-20_by4.txt","widths_04-12-20.txt","widths_08-16.txt","width_12.txt"\nasymmetries=widths')
     analysis.add_argument("-ph", "--phase",
                           dest="phase",
                           metavar="filename string",
@@ -417,7 +417,7 @@ def __create_parser__():
                           action='store',
                           default="period_24.txt",
                           help='Should be a file with phases you wish to search for listed in a single column separated by newlines.\
-                          Provide file is "period_24.txt"')
+                          Provided file is "period_24.txt"')
     
     distribution = analysis.add_mutually_exclusive_group(required=False)
     distribution.add_argument("-e", "--exact",
