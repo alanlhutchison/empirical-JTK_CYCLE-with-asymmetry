@@ -12,10 +12,11 @@ echo "	-p ) Period filename"
 echo "	-s ) Phase filename"
 echo "	-a ) Asymmetry filename"
 echo "  -x ) Prefix"
+echo "  -t ) paTh (directory from where script is run)"
 echo "  -h ) usage"
 }
 
-FPATH=$(pwd)
+FPATH=""
 
 prefix=""
 fn=""
@@ -25,7 +26,7 @@ fn_phase=""
 fn_width=""
 fn_output=""
 
-while getopts "f:x:w:p:s:a:oh" opt; do
+while getopts "f:x:w:p:s:a:t:oh" opt; do
     case $opt in
         f ) fn=$OPTARG;;
 	x ) prefix=$OPTARG;;
@@ -33,6 +34,7 @@ while getopts "f:x:w:p:s:a:oh" opt; do
 	p ) fn_period=$OPTARG;;
         s ) fn_phase=$OPTARG;;
 	a ) fn_width=$OPTARG;;
+	t ) FPATH=$OPTARG;;
         h ) usage
         exit 0;;
         *) usage
