@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 """
 Created on April 20 2014
-@author: Alan L. Hutchison, alanlhutchison@uchicago.edu, Aaron Dinner Group, University of Chicago
+@author: Alan L. Hutchison, alanlhutchison@uchicago.edu, Aaron R. Dinner Group, University of Chicago
 
 This script is one in a series of scripts for running empirical JTK_CYCLE analysis as described in 
 
-Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, PLoS Computational Biology 2014 (in review).
+Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, PLoS Computational Biology 2015 11(3): e 1004094. doi:10.1371/journal.pcbi.1004094
 
 Please use ./jtk7.py -h to see the help screen for further instructions on running this script.
 
 """
-VERSION="1.00"
+VERSION="1.1"
 
 from scipy.stats import kendalltau
 from operator import itemgetter
@@ -141,7 +141,7 @@ def organize_data(header,data):
         L=sorted(L, key=itemgetter(i))
     return header,L
 
-def generate_base_reference(header,waveform="trough",period=24,phase=0,width=12):
+def generate_base_reference(header,waveform="cosine",period=24,phase=0,width=12):
     """
     This will generate a waveform with a given phase and period based on the header, 
     """
@@ -154,23 +154,6 @@ def generate_base_reference(header,waveform="trough",period=24,phase=0,width=12)
         tpoints.append( (float(z)-float(phase) ) * coef)
 
 
-    def ramp_down(x,w=3*np.pi/2):
-        x = x % (2*np.pi)
-        y=max(-1*x/w + 1.0, 0.0)
-        return y
-    def ramp_up(x,w=3*np.pi/2):
-        x = x % (2*np.pi)
-        y =min(x/w, 1.0)
-        return y
-    def impulse(x,w=3*np.pi/4):
-        x = x % (2*np.pi)
-        d = min(x,np.abs(np.pi*2-x))
-        y = max(-2.*d/w + 1.0,0.0)
-        return y
-    def step(x,w=np.pi):
-        x = x % (2*np.pi)
-        y = 1.0 if x < w else 0.0
-        return y
     def trough(x,w):
         x = x % (2*np.pi)
         w = w % (2*np.pi)
@@ -190,20 +173,8 @@ def generate_base_reference(header,waveform="trough",period=24,phase=0,width=12)
         return y
 
 
-    #print tpoints
-    #print [tpoint/np.pi/2.0 for tpoint in tpoints]
-    #print phase
-    #print waveform
     if waveform == "cosine":
         reference=[cosine(tpoint,w) for tpoint in tpoints]
-    elif waveform == "impulse":
-        reference=[impulse(tpoint,w) for tpoint in tpoints]
-    elif waveform == "rampup":
-        reference=[ramp_up(tpoint,w) for tpoint in tpoints]
-    elif waveform == "rampdown":
-        reference=[ramp_down(tpoint,w) for tpoint in tpoints]
-    elif waveform == "step":
-        reference=[step(tpoint,w)     for tpoint in tpoints]
     elif waveform == "trough":
         reference=[trough(tpoint,w) for tpoint in tpoints]
     return reference
@@ -235,28 +206,6 @@ def FC(series):
     else:
         sFC = "NA"
     return sFC
-
-
-#def find_peak(series):
-#    """Finds maximum of series"""
-#    series=[float(s) if s!="NA" else 0 for s in series[1:] if s!="NA"  ]
-#    mmax = max(series)
-#    max_index = series.index(mmax)
-#    return max_index
-
-#def find_trough(series):
-#    """Finds minimum of series"""
-#    series=[float(s) if s!="NA" else 0 for s in series[1:] if s!="NA"  ]
-#    mmin = min(series)
-#    min_index = series.index(mmin)
-#    return min_index
-    
-
-#def maximum(series):
-#    """Finds maximum of series"""
-#    series=[float(s) for s in series[1:] if s!="NA"]
-#    mmax = max(series)
-#    return mmax
 
 
 def series_char(series):
@@ -319,7 +268,7 @@ def generate_mod_series(reference,series,RealKen):
         tau,p = np.nan,np.nan
     elif mod_values.count(0) == len(mod_values):
         tau,p = np.nan,np.nan
-    #elif sum(mod_values)<0.00001:
+        #elif sum(mod_values)<0.00001:
     #    tau,p = np.nan,np.nan        
     else:
         tau,p=kendalltau(mod_values,mod_reference)
@@ -342,7 +291,7 @@ def generate_mod_series(reference,series,RealKen):
 
 def __create_parser__():
     p = argparse.ArgumentParser(
-        description="Python script for running empirical JTK_CYCLE with asymmetry search as described in Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, PLoS Computational Biology 2014 (in review). This script was written by Alan L. Hutchison, alanlhutchison@uchicago.edu, Aaron Dinner Group, University of Chicago.",
+        description="Python script for running empirical JTK_CYCLE with asymmetry search as described in Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, PLoS Computational Biology 2015 11(3): e1004094. This script was written by Alan L. Hutchison, alanlhutchison@uchicago.edu, Aaron R. Dinner Group, University of Chicago.",
         epilog="Please contact the correpsonding author if you have any questions.",
         version=VERSION
         )
@@ -390,7 +339,7 @@ def __create_parser__():
                           default="cosine",
                           #choices=["waveform_cosine.txt","waveform_rampup.txt","waveform_rampdown.txt","waveform_step.txt","waveform_impulse.txt","waveform_trough.txt"],
                           help='Should be a file with waveforms  you wish to search for listed in a single column separated by newlines.\
-                          Options include cosine (dflt), trough, impulse, step, rampup (deprecated), rampdown (deprecated)')
+                          Options include cosine (dflt), trough')
 
     analysis.add_argument("-w", "--width", "-a", "--asymmetry",
                           dest="width",
@@ -406,7 +355,6 @@ def __create_parser__():
                           metavar="filename string",
                           type=str,
                           default="phases_00-22_by2.txt",
-                          #choices=["phases_00-22.txt","phases_00-22_by2.txt","phases_00-20.txt","phases_00-20_by4.txt"]
                           help='Should be a file with phases you wish to search for listed in a single column separated by newlines.\
                           Example files include "phases_00-22_by2.txt" or "phases_00-22_by4.txt" or "phases_00-20_by4.txt"')
 
