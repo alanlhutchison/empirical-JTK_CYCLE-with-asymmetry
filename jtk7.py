@@ -321,7 +321,7 @@ def __create_parser__():
                    The data should be tab-spaced. The first row should contain a # sign followed by the time points with either CT or ZT preceding the time point (such as ZT0 or ZT4). Longer or shorter prefixes will not work. The following rows should contain the gene/series ID followed by the values for every time point. Where values are not available NA should be put in it\'s place.')
 
 
-    analysis.add_argument("--prefix",
+    analysis.add_argument("-x","--prefix",
                           dest="prefix",
                           type=str,
                           metavar="string",
