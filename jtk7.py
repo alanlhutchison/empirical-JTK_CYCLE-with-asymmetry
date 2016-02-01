@@ -56,17 +56,17 @@ def main(args):
     #output = ["ID\tWaveform\tPeriod\tPhase\tAsymmetry\tMean\tStd_Dev\tMax\tMin\tMax_Amp\tFC\tIQR_FC\tTau\tempP"]
     Ps = []
     with open(fn_out,'w') as g:
-        g.write("ID\tWaveform\tPeriod\tPhase\tAsymmetry\tMean\tStd_Dev\tMax\tMin\tMax_Amp\tFC\tIQR_FC\tTau\tP\n")
+        g.write("ID\tWaveform\tPeriod\tPhase\tAsymmetry\tMean\tStd_Dev\tMax\tMaxLoc\tMin\tMinLoc\tMax_Amp\tFC\tIQR_FC\tTau\tP\n")
         for serie in series:
             if [s for s in serie[1:] if s!="NA"]==[]:
                 name = [serie[0]]+["All_NA"]+[-10000]*10+[np.nan,np.nan]
             else:
-                mmax,mmin,MAX_AMP=series_char(serie)
+                mmax,mmaxloc,mmin,mminloc,MAX_AMP=series_char(serie)
                 sIQR_FC=IQR_FC(serie)
                 smean = series_mean(serie)
                 sstd = series_std(serie)
                 sFC = FC(serie)
-
+                
             local_ps = [] 
             for waveform in waveforms:
                 for period in periods:
@@ -74,7 +74,7 @@ def main(args):
                         for width in widths:
                             reference = generate_base_reference(header,waveform,period,phase,width)
                             geneID,tau,p = generate_mod_series(reference,serie,RealKen)
-                            out_line = [geneID,waveform,period,phase,width,smean,sstd,mmax,mmin,MAX_AMP,sFC,sIQR_FC,tau,p]
+                            out_line = [geneID,waveform,period,phase,width,smean,sstd,mmax,mmaxloc,mmin,mminloc,MAX_AMP,sFC,sIQR_FC,tau,p]
                             out_line = [str(l) for l in out_line]
                             g.write("\t".join(out_line)+"\n")
 
@@ -208,18 +208,23 @@ def FC(series):
     return sFC
 
 
-def series_char(series):
+def series_char(series,header):
     """Uses interquartile range to estimate amplitude of a time series."""
     series=[float(s) for s in series[1:] if s!="NA"]
+    head = [header[i] for i,s in enumerate(series[1:]) if s!="NA"]
     if series!=[]:
         mmax = max(series)
+        mmaxloc = head[series.index(mmax)]
         mmin = min(series)
+        mminloc = head[series.index(mmin)]
         diff=mmax-mmin
     else:
         mmax = "NA"
+        mmaxloc = "NA"
         mmin = "NA"
+        mminloc = "NA"
         diff = "NA"
-    return mmax,mmin,diff
+    return mmax,mmaxloc,mmin,mminloc,diff
 
 
 def series_mean(series):
@@ -253,7 +258,6 @@ def generate_mod_series(reference,series,RealKen):
     for each gene in data or uses the one previously calculated.
     Then it runs Kendall's Tau on the exp. series against the null
     """
-
     geneID = series[0]
     values = series[1:]
     binary = np.array([1.0 if value!="NA" else np.nan for value in values])
@@ -268,8 +272,6 @@ def generate_mod_series(reference,series,RealKen):
         tau,p = np.nan,np.nan
     elif mod_values.count(0) == len(mod_values):
         tau,p = np.nan,np.nan
-        #elif sum(mod_values)<0.00001:
-    #    tau,p = np.nan,np.nan        
     else:
         tau,p=kendalltau(mod_values,mod_reference)
         if not np.isnan(tau):
@@ -281,9 +283,6 @@ def generate_mod_series(reference,series,RealKen):
                 p = p / 2.0
                 if tau < 0:
                     p = 1-p
-                    
-
-    #print tau,p
     return geneID,tau,p
 
 

@@ -27,6 +27,7 @@ def main():
     Ps = read_in_Ps(fn_ps)
     indx = header.index(field)
     master = sort_name(data)
+    master = edge_case(header,master)
     #print 'sorted'
     master,seen = best_P(master,Ps)
     #print 'best_p'
@@ -65,9 +66,51 @@ def sort_name(data):
         else:
             line = [float(num) if is_number(num) else num for num in line]
             good.append(line)
-    good = sorted(good,key= itemgetter(-1))
+    good = sorted(good,key= itemgetter(-1,0))
     data= good + bad
     return data
+
+def edge_case(header,sorted_data):
+    ### This will distinguish between ties
+    phind = header.index('Phase')
+    asymind = header.index('Asymmetry')
+    maxind = header.index('MaxLoc')
+    minind = header.index('MinLoc')
+    keep = []
+    for i in xrange(1,len((sorted_data))):
+        dat = sorted_data[i]
+        datmin1 = sorted_data[i-1]
+        if dat[0]==datmin1[0] and dat[-1]==datmin1[-1]:
+            zero =np.abs(float(dat[phind])-float(dat[maxind]))
+            one = np.abs(float(datmin1[phind])-float(datmin1[maxind]))
+            if zero>one:
+                keep.append(i)
+                #delete.append(i-1)
+            elif zero<one:
+                keep.append(i-1)
+                #delete.append(i)
+            elif zero==one:
+                zero =np.abs(float(dat[phind])-float(dat[maxind])+float(dat[asymind])-float(dat[asymind]))
+                one = np.abs(float(datmin1[phind])-float(datmin1[maxind])+float(datmin1[asymind])-float(datmin1[asymind]))
+                if zero>one:
+                    keep.append(i)
+                    #delete.append(i-1)
+                elif zero<one:
+                    keep.append(i-1)
+                    #delete.append(i)
+                elif zero==one:
+                    print 'There is a tie for',dat,datmin1
+                    keep.append(i)
+        else:
+            keep.append(i)
+    new_sorted_data = []
+    for i in set(keep):
+        new_sorted_data.append(sorted_data[i])
+    return new_sorted_data
+            
+    
+    
+
 
 def is_number(s):
     try:
