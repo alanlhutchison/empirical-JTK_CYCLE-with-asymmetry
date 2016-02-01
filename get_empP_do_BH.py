@@ -16,6 +16,7 @@ import statsmodels.stats.multitest as ssm
 from operator import itemgetter
 import sys
 import time
+import numpy as np
 
 def main():
     fn= sys.argv[1] # Name of JTK file you wish to have analyzed
@@ -77,35 +78,42 @@ def edge_case(header,sorted_data):
     maxind = header.index('MaxLoc')
     minind = header.index('MinLoc')
     keep = []
+    delete = []
     for i in xrange(1,len((sorted_data))):
         dat = sorted_data[i]
         datmin1 = sorted_data[i-1]
         if dat[0]==datmin1[0] and dat[-1]==datmin1[-1]:
-            zero =np.abs(float(dat[phind])-float(dat[maxind]))
-            one = np.abs(float(datmin1[phind])-float(datmin1[maxind]))
+            zero =np.abs(float(dat[phind])-(float(dat[maxind][2:]) % 24))
+            one = np.abs(float(datmin1[phind])-(float(datmin1[maxind][2:])%24))
+            print dat[0]
+            print zero,dat
+            print one,datmin1
             if zero>one:
-                keep.append(i)
-                #delete.append(i-1)
-            elif zero<one:
                 keep.append(i-1)
-                #delete.append(i)
+                delete.append(i)
+            elif zero<one:
+                keep.append(i)
+                delete.append(i-1)
             elif zero==one:
-                zero =np.abs(float(dat[phind])-float(dat[maxind])+float(dat[asymind])-float(dat[asymind]))
-                one = np.abs(float(datmin1[phind])-float(datmin1[maxind])+float(datmin1[asymind])-float(datmin1[asymind]))
+                zero=np.abs( float(dat[phind])  + float(dat[asymind]) - (float(dat[minind][2:])%24) )
+                one =np.abs( float(datmin1[phind])  + float(datmin1[asymind]) - (float(datmin1[minind][2:])%24) )
                 if zero>one:
-                    keep.append(i)
-                    #delete.append(i-1)
-                elif zero<one:
                     keep.append(i-1)
-                    #delete.append(i)
+                    delete.append(i)
+                elif zero<one:
+                    keep.append(i)
+                    delete.append(i)
                 elif zero==one:
                     print 'There is a tie for',dat,datmin1
                     keep.append(i)
+                    delete.append(i-1)
         else:
             keep.append(i)
     new_sorted_data = []
     for i in set(keep):
-        new_sorted_data.append(sorted_data[i])
+        if i not in delete:
+            print sorted_data[i]
+            new_sorted_data.append(sorted_data[i])
     return new_sorted_data
             
     
