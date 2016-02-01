@@ -42,8 +42,14 @@ def main(args):
     add_on = 1
     while os.path.isfile(fn_out):
         print fn_out, "already exists, take evasive action!!!"
-        fn_out = ".".join(fn_out.split(".")[0:-1])+"_"+str(add_on)+".txt"
-        add_on = add_on + 1
+        endstr = '.'+fn_out.split('.')[-1]
+        mid = '_'+str(add_on)+endstr
+        if add_on ==1:
+            fn_out = fn_out.replace(endstr,mid)
+        else:
+            midendstr = '_'+fn_out.split('_')[-1]
+            fn_out = fn_out.replace(midendstr,mid)
+            add_on = add_on + 1
 
     waveforms = read_in_list(fn_waveform)
     periods = read_in_list(fn_period)
@@ -61,7 +67,7 @@ def main(args):
             if [s for s in serie[1:] if s!="NA"]==[]:
                 name = [serie[0]]+["All_NA"]+[-10000]*10+[np.nan,np.nan]
             else:
-                mmax,mmaxloc,mmin,mminloc,MAX_AMP=series_char(serie)
+                mmax,mmaxloc,mmin,mminloc,MAX_AMP=series_char(serie,header)
                 sIQR_FC=IQR_FC(serie)
                 smean = series_mean(serie)
                 sstd = series_std(serie)
@@ -208,14 +214,16 @@ def FC(series):
     return sFC
 
 
-def series_char(series,header):
+def series_char(fullseries,header):
     """Uses interquartile range to estimate amplitude of a time series."""
-    series=[float(s) for s in series[1:] if s!="NA"]
-    head = [header[i] for i,s in enumerate(series[1:]) if s!="NA"]
+    series=[float(s) for s in fullseries[1:] if s!="NA"]
+    head = [header[i] for i,s in enumerate(fullseries[1:]) if s!="NA"]
     if series!=[]:
         mmax = max(series)
+        #print series.index(mmax)
         mmaxloc = head[series.index(mmax)]
         mmin = min(series)
+        #print series.index(mmin)
         mminloc = head[series.index(mmin)]
         diff=mmax-mmin
     else:
