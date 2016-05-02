@@ -4,21 +4,14 @@ Created on May 2 2016
 @author: Alan L. Hutchison, alanlhutchison@uchicago.edu, Aaron R. Dinner Group, University of Chicago
 
 """
-VERSION="1.1"
+VERSION="1.0"
 
-from scipy.stats import kendalltau
-import numpy as np
 import argparse
-import os.path
-
+import sys
+sys.path.insert(1,'bin/')
 
 import eJTK
 import CalcP
-#from operator import itemgetter
-#import sys
-#import itertools as it
-#import time
-#from scipy.stats import norm
 
 def main(args):
     fn          = args.filename
