@@ -1,11 +1,15 @@
+#Empirical JTK_CYCLE
+
 Hi!
 
-This is the read-me for running the analysis described in Hutchison AL, Maienscein-Cline M, Chiang AH, Tabei SMA, Gudjonson H, Bahroos N, Allada R, Dinner AR. “Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data.” PLoS Computational Biology 2015 Mar. Vol. 11, No. 3, pp. e1004094, DOI: 10.1371/journal.pcbi.1004094
+This is the README for running the rhythm detection method described in [Hutchison AL, Maienscein-Cline M, Chiang AH, Tabei SMA, Gudjonson H, Bahroos N, Allada R, Dinner AR. “Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data.” PLoS Computational Biology 2015 Mar. Vol. 11, No. 3, pp. e1004094](doi:10.1371/journal.pcbi.1004094)
 
 It is based on the original JTK_CYCLE code from Hughes ME, Hogenesch JB, Kornacker K. JTK_CYCLE: an efficient nonparametric algorithm for detecting rhythmic components in genome-scale data sets. J Biol Rhythms. 2010 Oct;25(5):372-80. doi: 10.1177/0748730410379711.
 
 A previous version of this method empirically calculated the p-values using many permutations. We have recently sped up this calculation by approximating the null tau distribution using a Gamma distribution based on 1000 permutations. P-values can be derived from this model, allowing for p-values independent of the number of permutations. A pre-print demonstrating the accuracy of this process is forthcoming.
 
+
+Applications:
 
 An application of the method to mouse and human pancreas and liver can be found in Perelis et al. "Pancreatic β cell enhancers regulate rhythmic transcription of genes controlling insulin secretion" (2015). 350(6261). aac4250. doi:10.1126/science.aac4250
 
@@ -13,7 +17,7 @@ An application of the method to Drosophila neurons can be found in Flourakis M e
 
 An application of the method to 16S gut microbiome data can be found at: Leone VA et al. “Effects of diurnal variation of gut microbes and high fat feeding on host circadian clock function and metabolism” Cell Host-Microbe (2015). 17(5). 681-689. 13 May doi:10.1016/j.chom.2015.03.006
 
-
+License:
 This code is released with the MIT License. See the License.txt file for more information.
 
 
