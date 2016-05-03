@@ -11,11 +11,11 @@ A previous version of this method empirically calculated the p-values using many
 
 ##Applications:
 
-An application of the method to mouse and human pancreas and liver can be found in [Perelis et al. "Pancreatic β cell enhancers regulate rhythmic transcription of genes controlling insulin secretion" (2015). 350(6261). aac4250. doi:10.1126/science.aac4250]()
+An application of the method to mouse and human pancreas and liver can be found in [Perelis et al. "Pancreatic β cell enhancers regulate rhythmic transcription of genes controlling insulin secretion" (2015). 350(6261). aac4250. doi:10.1126/science.aac4250](http://science.sciencemag.org/content/350/6261/aac4250)
 
-An application of the method to Drosophila neurons can be found in [Flourakis M et al. "A conserved bicycle model for circadian clock control of membrane excitability" Cell (2015). 162(4). 836-848. doi:10.1016/j.cell.2015.07.036]()
+An application of the method to Drosophila neurons can be found in [Flourakis M et al. "A conserved bicycle model for circadian clock control of membrane excitability" Cell (2015). 162(4). 836-848. doi:10.1016/j.cell.2015.07.036](http://www.sciencedirect.com/science/article/pii/S0092867415009137)
 
-An application of the method to 16S gut microbiome data can be found in [Leone VA et al. “Effects of diurnal variation of gut microbes and high fat feeding on host circadian clock function and metabolism” Cell Host-Microbe (2015). 17(5). 681-689. 13 May doi:10.1016/j.chom.2015.03.006]()
+An application of the method to 16S gut microbiome data can be found in [Leone VA et al. “Effects of diurnal variation of gut microbes and high fat feeding on host circadian clock function and metabolism” Cell Host-Microbe (2015). 17(5). 681-689. 13 May doi:10.1016/j.chom.2015.03.006](http://www.sciencedirect.com/science/article/pii/S1931312815001237)
 
 ## License:
 This code is released with the MIT License. See the License.txt file for more information.
@@ -25,7 +25,7 @@ This code is released with the MIT License. See the License.txt file for more in
 ## Execution
 
 Use
-	chmod 755 eJTK-CalcP.py
+<pre><code>chmod 755 eJTK-CalcP.py</code></pre>
 
 to make eJTK-CalcP.py executable.
 
@@ -34,7 +34,7 @@ to make eJTK-CalcP.py executable.
 
 
 
-   ./eJTK-CalcP.py -f example/TestInput4.txt -w ref_files/waveform_cosine.txt -p ref_files/period24.txt -s ref_files/phases_00-22_by2.txt -a ref_files/asymmetries_02-22_by2.txt -x cos24_ph00-22_by2_a02-22_by2_OTHERTEXT
+<pre><code>./eJTK-CalcP.py -f example/TestInput4.txt -w ref_files/waveform_cosine.txt -p ref_files/period24.txt -s ref_files/phases_00-22_by2.txt -a ref_files/asymmetries_02-22_by2.txt -x cos24_ph00-22_by2_a02-22_by2_OTHERTEXT</code></pre>
 
 
 
