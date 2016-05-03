@@ -39,15 +39,15 @@ to make eJTK-CalcP.py executable.
 
 
 
-1. example/TestInput4_cos24_ph00-22_by2_a02-22_by2_OTHERTEXT_jtkout.txt
+1. **example/TestInput4_cos24_ph00-22_by2_a02-22_by2_OTHERTEXT_jtkout.txt**
    This is the output of eJTK.py, it contains the best reference waveform matching each time series. Best is defined as having the highest Tau value. This becomes input for CalcP.py.
 
 
-2. example/TestInput4_cos24_ph00-22_by2_a02-22_by2_OTHERTEXT_jtknull1000.txt
+2. **example/TestInput4_cos24_ph00-22_by2_a02-22_by2_OTHERTEXT_jtknull1000.txt**
    This is the output of eJTK.py unless otherwise specified by the -n flag (see eJTK-CalcP.py -h for more information). It similar to *jtkout.txt only it contains the results of 1000 runs of Gaussian noise. It is also an input for CalcP.py
 
 
-3. example/TestInput4_cos24_ph00-22_by2_a02-22_by2_OTHERTEXT_jtkout_GammaP.txt
+3. **example/TestInput4_cos24_ph00-22_by2_a02-22_by2_OTHERTEXT_jtkout_GammaP.txt**
    This is the output of CalcP.py. It is the equivalent of *jtkout.txt, only now with correct p-values as estimated by fitting the time series to a Gamma distribution. It also contains a column of these p-values adjusted with the Benjamini-Hochberg correction.
 
 If you run the above command as is will produce files with a '_1' appended, as these files already exist in the examples folder.
