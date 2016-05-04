@@ -51,7 +51,7 @@ def main(args):
     
     #ser = pd.read_table(fn_ser,index_col=0)
     #NUM = ser.shape[1]
-    jtk = pd.read_table(fn_jtk,index_col=0)
+    jtk = pd.read_table(fn_jtk,index_col='ID')
 
     
     if '.pkl' in fn_pkl:
