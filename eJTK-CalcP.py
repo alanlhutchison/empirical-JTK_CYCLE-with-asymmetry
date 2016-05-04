@@ -8,7 +8,12 @@ VERSION="1.0"
 
 import argparse
 import sys
-sys.path.insert(1,'bin/')
+import os
+#sys.path.insert(1,'bin/')
+binpath=os.path.join(os.path.dirname(sys.argv[0]),'bin/')
+sys.path.insert(1,binpath)
+
+
 
 import eJTK
 import CalcP
