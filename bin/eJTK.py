@@ -101,7 +101,7 @@ def main(args):
         return fn_out,fn_null
             
 def get_best_match(serie,waveforms,periods,phases,widths,dref):
-    best = ['blank','cosine',0.,0.,0.,0.,1.]    
+    best = [serie[0],'cosine',0.,0.,0.,0.,1.]    
     for waveform in waveforms:
         for period in periods:
             pairs = []
