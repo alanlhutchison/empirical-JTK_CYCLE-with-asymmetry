@@ -8,6 +8,9 @@ This script is one in a series of scripts for running empirical JTK_CYCLE analys
 
 Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, PLoS Computational Biology 2015 11(3): e 1004094. doi:10.1371/journal.pcbi.1004094
 
+It is a sped-up version of the original provided script using reference waveform pre-calculation and symmetry arguments to reduce computational time.
+
+The resulting *jtkout.txt file contains only the best-matching waveform for each time series (unlike the original script).
 Please use ./jtk7.py -h to see the help screen for further instructions on running this script.
 
 """

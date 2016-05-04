@@ -3,16 +3,16 @@
 Created on May 2 2016
 @author: Alan L. Hutchison, alanlhutchison@uchicago.edu, Aaron R. Dinner Group, University of Chicago
 
+Use ./eJTK-CalcP.py -h to see help and usage.
+
 """
 VERSION="1.0"
 
 import argparse
 import sys
 import os
-#sys.path.insert(1,'bin/')
 binpath=os.path.join(os.path.dirname(sys.argv[0]),'bin/')
 sys.path.insert(1,binpath)
-
 
 
 import eJTK
@@ -40,7 +40,7 @@ def main(args):
 
 def __create_parser__():
     p = argparse.ArgumentParser(
-        description="Python script for running empirical JTK_CYCLE with asymmetry search as described in Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, PLoS Computational Biology 2015 11(3): e1004094. This script was written by Alan L. Hutchison, alanlhutchison@uchicago.edu, Aaron R. Dinner Group, University of Chicago.",
+        description="Python script for running empirical JTK_CYCLE with asymmetry search as described in Hutchison, Maienschein-Cline, and Chiang et al. Improved statistical methods enable greater sensitivity in rhythm detection for genome-wide data, PLoS Computational Biology 2015 11(3): e1004094. This script was written by Alan L. Hutchison, alanlhutchison@uchicago.edu, Aaron R. Dinner Group, University of Chicago. This code has been updated to implement modeling the Tau statistics using a Gamma distribution to accelerate the calculation of p-values.",
         epilog="Please contact the correpsonding author if you have any questions.",
         version=VERSION
         )
@@ -107,7 +107,7 @@ def __create_parser__():
                           action='store',
                           default="24",
                           help='Should be a file with periods you wish to search for listed in a single column separated by newlines.\
-                          Provided file is "period_24.txt. Will default to 24"')
+                          Will default to 24"')
     
     analysis.add_argument("-n","--null",
                           dest="null",
