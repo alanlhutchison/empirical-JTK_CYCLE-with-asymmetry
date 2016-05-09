@@ -86,7 +86,7 @@ def empP(taus,emps):
     taus = np.array(taus)
     emps = np.array(emps)
     ps = [(np.sum(emps>=t)+1)/float(len(emps)+1) for t in taus]
-    return np.array(ps
+    return np.array(ps)
 
 
 def prepare(taus):
