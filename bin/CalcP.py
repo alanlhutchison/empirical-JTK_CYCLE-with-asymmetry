@@ -69,12 +69,24 @@ def main(args):
     else:
         keys = jtk['TauMean']
     print p0
-    #print keys
+
+    
+    empPs = empP(keys,taus)
+    jtk['empP']=empPs
+
     ps = gd.sf(keys)
     jtk['GammaP'] = ps
     jtk['GammaBH'] = list(ssm.multipletests(ps,method='fdr_bh')[1])
+    
     fn_out = fn_jtk.replace('.txt','_GammaP.txt')
     jtk.to_csv(fn_out,sep='\t')
+
+    
+def empP(taus,emps):
+    taus = np.array(taus)
+    emps = np.array(emps)
+    ps = [(np.sum(emps>=t)+1)/float(len(emps)+1) for t in taus]
+    return np.array(ps
 
 
 def prepare(taus):
@@ -92,11 +104,11 @@ def prepare(taus):
     #intkeys = [int(np.round((o+1.)/2.*NUM*(NUM-1)/2,0)) for o in keys]
     intvalues = [v/float(np.sum(values)) for v in values]
     gd = lambda x,p: ss.gamma(p[0],p[1],p[2]).cdf(x)
-    yerr = [1e-7/(1*i+1)]*(len(intvalues)-sum(np.cumsum(intvalues)>0.9))+[1e-8/(1*i+1)]*sum(np.cumsum(intvalues)>0.9)
+    yerr = [1e-5/(1*i+1)]*(len(intvalues)-sum(np.cumsum(intvalues)>0.9))+[1e-6/(1*i+1)]*sum(np.cumsum(intvalues)>0.9)
 
-    a = (np.mean(taus)-0.)**2/np.var(taus)
+    a = np.mean(taus)**2/np.var(taus)
     b = 1e-8
-    c = np.var(taus)/(np.mean(taus)-0.)
+    c = np.var(taus)/(np.mean(taus))
     p0 = [a,b,c]
     ind = list(np.cumsum(intvalues)>0.9).index(1)
     limit = keys[ind]    
