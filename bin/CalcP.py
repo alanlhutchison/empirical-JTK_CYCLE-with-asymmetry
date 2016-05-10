@@ -217,7 +217,7 @@ def __create_parser__():
                           dest="fit",
                           action='store_true',
                           default=False,
-                          help="A flag without arguments indicating that the p-value calculation should use the fitting method gauranteed to produce conservative results.")
+                          help="A flag without arguments indicating that the p-value calculation should use the fitting method gauranteed to produce conservative results. THIS FITTING HAS BEEN SHOWN TO BE UNSTABLE IN CERTAIN SITUATIONS AND WILL BE FIXED IN AN UPCOMING VERSION..")
     return p
 
 
