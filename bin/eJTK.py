@@ -53,6 +53,7 @@ def main(args):
     header,series   = read_in(fn)
     #header,series = organize_data(header,data)
     out_lines = [[]]*len(series)
+
     dref = make_references(header,waveforms,periods,phases,widths)
 
     #print header
@@ -118,9 +119,8 @@ def get_best_match(serie,waveforms,periods,phases,widths,dref):
                         geneID,tau,p = generate_mod_series(reference,serie)
                         if min(p,best[-1])==p:
                             best = [geneID,waveform,period,phase,nadir,tau,p]
-
     if best[-2] <0:
-        geneID,waveform,period,phase,nadir,tau,p = best        
+        geneID,waveform,period,phase,nadir,tau,p = best
         best = [geneID,waveform,period,nadir,phase,np.abs(tau),p]
     return best
 
@@ -338,15 +338,15 @@ def generate_mod_series(reference,series):
     for each gene in data or uses the one previously calculated.
     Then it runs Kendall's Tau on the exp. series against the null
     """
+    
     geneID = series[0]
     values = series[1:]
-    binary = np.array([1.0 if value!="NA" else np.nan for value in values])
-    reference = np.array(reference)
-    temp = reference*binary
-    mod_reference = [value for value in temp if not np.isnan(value)]
-    mod_values = [float(value) for value in values if value!='NA']
 
-    tau,p=kendalltau(mod_values,mod_reference)
+    if len(reference)!=len(values):
+        geneID = 'blank'
+        return geneID,0,1
+
+    tau,p=kendalltau(values,reference)
     return geneID,tau,p
 
 
