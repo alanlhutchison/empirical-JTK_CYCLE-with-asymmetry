@@ -106,9 +106,10 @@ def prepare(taus):
     gd = lambda x,p: ss.gamma(p[0],p[1],p[2]).cdf(x)
     yerr = [1e-5/(1*i+1)]*(len(intvalues)-sum(np.cumsum(intvalues)>0.9))+[1e-6/(1*i+1)]*sum(np.cumsum(intvalues)>0.9)
 
-    a = np.mean(taus)**2/np.var(taus)
-    b = 1e-8
-    c = np.var(taus)/(np.mean(taus))
+    a,b,c = ss.gamma.fit(taus)
+    #a = np.mean(taus)**2/np.var(taus)
+    #b = 1e-8
+    #c = np.var(taus)/(np.mean(taus))
     p0 = [a,b,c]
     ind = list(np.cumsum(intvalues)>0.9).index(1)
     limit = keys[ind]    
