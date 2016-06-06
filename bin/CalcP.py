@@ -59,8 +59,6 @@ def main(args):
             for _ in xrange(2):
                 params = GammaFit(keys,intvalues,yerr,p0,limit)
                 p0 = params[0]
-        else:
-            p0[1] = 0
     params = p0
     gd = ss.gamma(params[0],params[1],params[2])
 
