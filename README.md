@@ -17,9 +17,6 @@ An application of the method to Drosophila neurons can be found in [Flourakis M 
 
 An application of the method to 16S gut microbiome data can be found in [Leone VA et al. “Effects of diurnal variation of gut microbes and high fat feeding on host circadian clock function and metabolism” Cell Host-Microbe (2015). 17(5). 681-689. 13 May doi:10.1016/j.chom.2015.03.006](http://www.sciencedirect.com/science/article/pii/S1931312815001237)
 
-## License:
-This code is released with the MIT License. See the License.txt file for more information.
-
 
 
 ## Execution
@@ -29,6 +26,13 @@ Use
 
 to make eJTK-CalcP.py executable.
 
+Type
+
+<pre><code>cd bin/</code></pre>
+<pre><code>python setup.py build_ext --inplace</code></pre>
+<pre><code>cd ../bin/</code></pre>
+
+to compile the Cython code.
 
 ### Running this command will procude three files
 
@@ -51,3 +55,17 @@ to make eJTK-CalcP.py executable.
    This is the output of CalcP.py. It is the equivalent of *jtkout.txt, only now with correct p-values as estimated by fitting the time series to a Gamma distribution. It also contains a column of these p-values adjusted with the Benjamini-Hochberg correction.
 
 If you run the above command as is will produce files with a '_1' appended, as these files already exist in the examples folder.
+
+##Version information:
+
+* Python 2.7.11 (default, Dec  5 2015, 14:44:47)
+* [GCC 4.2.1 Compatible Apple LLVM 7.0.0 (clang-700.1.76)] on darwin
+
+* cython.__version__ 0.24
+* scipy.__version__ 0.15.1
+* numpy.__version__ 1.11.0
+* statsmodels.__version__ 0.6.1
+
+
+## License:
+This code is released with the MIT License. See the License.txt file for more information.
