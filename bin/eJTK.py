@@ -16,11 +16,18 @@ Please use ./jtk7.py -h to see the help screen for further instructions on runni
 """
 VERSION="1.1"
 
-from scipy.stats import kendalltau
+#from scipy.stats import kendalltau
 import numpy as np
 import argparse
 import os.path
 
+
+from accessories import get_waveform_list as a_get_waveform_list
+from accessories import make_references as a_make_references
+from accessories import kt ### this is kendall tau
+from accessories import get_matches as a_get_matches
+from accessories import pick_best_match as a_pick_best_match
+from accessories import get_best_match as a_get_best_match
 #from operator import itemgetter
 #import sys
 #import itertools as it
@@ -39,13 +46,11 @@ def main(args):
 
     fn_out        = set_fn_out(fn,prefix,fn_out)
     fnw = fn_waveform.split('/')[-1] if '/' in fn_waveform else fn_waveform
-    if fnw== 'cosine':
-        waveforms = ['cosine']
+    if 'trough' in fnw:
+        waveform = 'trough'
     else:
-        waveforms     = read_in_list(fn_waveform)
+        waveform = 'cosine'
 
-        
-        
         
     periods       = np.array(read_in_list(fn_period),dtype=float)
     phases        = np.array(read_in_list(fn_phase),dtype=float)
@@ -53,10 +58,10 @@ def main(args):
     header,series   = read_in(fn)
     #header,series = organize_data(header,data)
     out_lines = [[]]*len(series)
-
-    dref = make_references(header,waveforms,periods,phases,widths)
-
-    #print header
+    
+    triples = a_get_waveform_list(periods,phases,widths)
+    new_header = [float(x[2:]) for x in header]
+    dref = a_make_references(new_header,triples,waveform)
     
     for i,serie in enumerate(series):
         if [s for s in serie[1:] if s!="NA"]==[]:
@@ -68,14 +73,14 @@ def main(args):
             sstd    = series_std(serie)
             sFC     = FC(serie)
         
-        best = get_best_match(serie,waveforms,periods,phases,widths,dref)
-        geneID,waveform,period,phase,nadir,tau,p = best
-        out_line =     [geneID,waveform,period,phase,nadir,smean,sstd,mmax,mmaxloc,mmin,mminloc,MAX_AMP,sFC,sIQR_FC,tau,p]
+        best = a_get_best_match(serie,waveform,triples,dref,new_header)
+        geneID,waveform,period,phase,nadir,maxloc,minloc,tau,p = best
+        out_line =     [geneID,waveform,period,phase,nadir,smean,sstd,maxloc,minloc,mmax,mmaxloc,mmin,mminloc,MAX_AMP,sFC,sIQR_FC,tau,p]
         out_line =     [str(l) for l in out_line]
         out_lines[i] = out_line
 
     with open(fn_out,'w') as g:
-        g.write("ID\tWaveform\tPeriod\tPhase\tNadir\tMean\tStd_Dev\tMax\tMaxLoc\tMin\tMinLoc\tMax_Amp\tFC\tIQR_FC\tTau\tP\n")
+        g.write("ID\tWaveform\tPeriod\tPhase\tNadir\tMean\tStd_Dev\tMaxLoc\tMinLoc\tMax\tMaxLoc\tMin\tMinLoc\tMax_Amp\tFC\tIQR_FC\tTau\tP\n")
         for out_line in out_lines:
             g.write("\t".join(out_line)+"\n")
 
@@ -89,8 +94,8 @@ def main(args):
         for j in xrange(null_size):
             
             ser = np.random.normal(0,1,size=len(header)+1)
-            best = get_best_match(ser,waveforms,periods,phases,widths,dref)
-            geneID,waveform,period,phase,nadir,tau,p = best
+            best = a_get_best_match(ser,waveform,triples,dref,new_header)
+            geneID,waveform,period,phase,nadir,maxloc,minloc,tau,p = best
             out_line =     [geneID,waveform,period,phase,nadir,tau,p]
             out_line =     [str(l) for l in out_line]
             out_lines[j] = out_line
@@ -104,45 +109,6 @@ def main(args):
     else:
         return fn_out,fn_null
             
-def get_best_match(serie,waveforms,periods,phases,widths,dref):
-    best = [serie[0],'cosine',0.,0.,0.,0.,1.]    
-    for waveform in waveforms:
-        for period in periods:
-            pairs = []
-            for phase in phases:
-                for width in widths:
-                    nadir = (phase+width)%period
-                    pair = [nadir,phase]
-                    if pair not in pairs:
-                        pairs.append([phase,nadir])
-                        reference = dref[waveform][period][phase][nadir]
-                        geneID,tau,p = generate_mod_series(reference,serie)
-                        if min(p,best[-1])==p:
-                            best = [geneID,waveform,period,phase,nadir,tau,p]
-    if best[-2] <0:
-        geneID,waveform,period,phase,nadir,tau,p = best
-        best = [geneID,waveform,period,nadir,phase,np.abs(tau),p]
-    return best
-
-
-def make_references(header,waveforms,periods,phases,widths):
-    dref ={}
-    pairs = []
-    for waveform in waveforms:
-        dref.setdefault(waveform,{})
-        for period in periods:
-            dref[waveform].setdefault(period,{})                
-            for phase in phases:
-                dref[waveform][period].setdefault(phase,{})                    
-                for width in widths:
-                    nadir = (phase+width)%period                        
-                    dref[waveform][period][phase].setdefault(nadir,[])                        
-                    pair = [nadir,phase]
-                    if pair not in pairs:
-                        pairs.append([phase,nadir])                            
-                        dref[waveform][period][phase][nadir]= generate_base_reference(header,waveform,period,phase,width)
-    return dref
-
             
 def set_fn_out(fn,prefix,fn_out):
     if fn_out == "DEFAULT":
@@ -346,7 +312,7 @@ def generate_mod_series(reference,series):
         geneID = 'blank'
         return geneID,0,1
 
-    tau,p=kendalltau(values,reference)
+    tau,p=kt(values,reference)
     return geneID,tau,p
 
 
