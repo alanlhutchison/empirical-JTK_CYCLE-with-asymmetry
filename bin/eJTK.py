@@ -58,11 +58,20 @@ def main(args):
     header,series   = read_in(fn)
     #header,series = organize_data(header,data)
     out_lines = [[]]*len(series)
+    #print periods
+    #print phases
+    #print widths
+    ##### Here we insert some code to allow for a speedup if full set of phases and asymmetries are used
+    #if len(phases)==len(widths)+1:
+    #if 
     
     triples = a_get_waveform_list(periods,phases,widths)
+    print triples
+
+    
     new_header = [float(x[2:]) for x in header]
     dref = a_make_references(new_header,triples,waveform)
-    
+    print dref.keys()
     for i,serie in enumerate(series):
         if [s for s in serie[1:] if s!="NA"]==[]:
             name = [serie[0]]+["All_NA"]+[-10000]*10+[np.nan,np.nan]
@@ -120,7 +129,7 @@ def set_fn_out(fn,prefix,fn_out):
     def f_add_on(fn_out):
         add_on = 1
         while os.path.isfile(fn_out):
-            print fn_out, "already exists, take evasive action!!!"
+            print fn_out, "already exists, appending counter to filename!!!"
             endstr = '.'+fn_out.split('.')[-1]
             mid = '_'+str(add_on)+endstr
             if add_on ==1:
@@ -165,12 +174,12 @@ def read_in(fn):
         for line in f:
             words = line.strip().split()
             words = [word.strip() for word in words]
-            if words[0] == "#":
+            if words[0] == "#" or words[0]=='ID':
                 start_right = 1
                 header = words[1:]
             else:
                 if start_right == 0:
-                    print "Please enter file with header starting with #"
+                    print "Please enter file with header starting with # or ID"
                 elif start_right == 1:
                     data.append(words)
     return header, data

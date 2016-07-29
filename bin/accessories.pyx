@@ -4,13 +4,13 @@ from __future__ import division#, absolute_import# print_function, absolute_impo
 #import math
 from collections import namedtuple
 
-from scipy.lib.six import xrange
+#from scipy.lib.six import xrange
 
 # friedmanchisquare patch uses python sum
 #pysum = sum  # save it before it gets overwritten
 
 # Scipy imports.
-from scipy.lib.six import callable, string_types
+#from scipy.lib.six import callable, string_types
 from numpy import array, asarray, ma, zeros, sum
 import scipy.special as special
 import scipy.linalg as linalg
@@ -91,6 +91,7 @@ def pick_best_match(res):
 
     res = res[tau_mask]
     phases = np.abs(res[:,3]-res[:,5])
+    #print phases
     #minphasediff = min(phases)
     phasemask = (min(phases)==phases)
     if np.sum(phasemask)==1:
@@ -105,13 +106,13 @@ def pick_best_match(res):
         return res[ind]
 
     ### If we've gotten down here everything has failed
-    print 'Ties remain...',res
+    #print 'Ties remain...',res
     return res[np.random.randint(len(res))]
 
 def get_best_match(serie,waveform,triples,dref,new_header):
 
     best = [serie[0],'cosine',0.,0.,0.,0.,1.]
-
+    #print serie[0]
     lamb_get_matches = lambda triple: get_matches(serie[1:],triple,dref,new_header)
     res = np.array(map(lamb_get_matches,triples))
     #print res
@@ -129,30 +130,22 @@ def get_waveform_list(periods,phases,widths):
     triples = np.zeros((int(lper*lpha*lwid/2),3))
     cdef int i,j
     cdef int period,phase,width,nadir
-
-    
     for i,period in enumerate(periods):
         j = 0
-        #print lpha,lwid
-        #print lpha*lwid/2
         pairs = [[0,0]]*int(lpha*lwid/2)
+        master_pairs = [[phase,(phase+width)%period] for phase in phases for width in widths]
+        print len(master_pairs),master_pairs
         for phase in phases:
             for width in widths:
                 nadir = (phase+width)%period
-                #print
-                #print phase,nadir
                 pair = [nadir,phase]
-                #print pair, 'not in', pairs,pair not in pairs
-                if pair not in pairs:
-                    #print 'Adding', phase,nadir
+                if pair not in pairs and pair[::-1] in master_pairs:
                     pairs[j] = [phase,nadir]
                     triples[int(i*lper+j)] = np.array([period,phase,width])
+                    print pairs[j]                    
                     j+=1
-        #for pair in pairs:
-        #    print pair
+
     triples = np.array(triples,dtype=float)
-    #for trip in triples:
-    #    print trip
     return triples
 
 
