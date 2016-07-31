@@ -66,12 +66,13 @@ def main(args):
     #if 
     
     triples = a_get_waveform_list(periods,phases,widths)
-    print triples
-
+    #print triples
     
-    new_header = [float(x[2:]) for x in header]
+    
+    new_header = [float(x[2:]) if 'ZT' in x or 'CT' in x else float(x) for x in header]
+    
     dref = a_make_references(new_header,triples,waveform)
-    print dref.keys()
+
     for i,serie in enumerate(series):
         if [s for s in serie[1:] if s!="NA"]==[]:
             name = [serie[0]]+["All_NA"]+[-10000]*10+[np.nan,np.nan]
