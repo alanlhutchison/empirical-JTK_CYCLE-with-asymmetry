@@ -61,7 +61,7 @@ def __create_parser__():
                    metavar="filename string",
                    type=str,
                    default = "DEFAULT",
-                   help="You want to output something. If you leave this blank, _jtkout.txt will be appended to your filename")
+                   help="You want to output something. If you leave this blank,prefix+'_jtkout.txt' will be appended to your filename")
 
     analysis.add_argument("-x","--prefix",
                           dest="prefix",
