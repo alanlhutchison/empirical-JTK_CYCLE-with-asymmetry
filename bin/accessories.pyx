@@ -28,7 +28,7 @@ def generate_base_reference(header,waveform="cosine",double period=24.,double ph
     This will generate a waveform with a given phase and period based on the header, 
     """
     cdef double coef,w,tpoint
-    #print header,phase
+
     ZTs = np.array(header,dtype=float)
     coef = 2.0 * np.pi / period
     w = width * coef
@@ -115,7 +115,7 @@ def get_best_match(serie,waveform,triples,dref,new_header):
     #print serie[0]
     lamb_get_matches = lambda triple: get_matches(serie[1:],triple,dref,new_header)
     res = np.array(map(lamb_get_matches,triples))
-    #print res
+
     r = pick_best_match(res)
     best = [serie[0],waveform,r[2],r[3],r[4],r[5],r[6],r[0],r[1]]
     return best
@@ -134,7 +134,7 @@ def get_waveform_list(periods,phases,widths):
         j = 0
         pairs = [[0,0]]*int(lpha*lwid/2)
         master_pairs = [[phase,(phase+width)%period] for phase in phases for width in widths]
-        print len(master_pairs),master_pairs
+        #print len(master_pairs),master_pairs
         for phase in phases:
             for width in widths:
                 nadir = (phase+width)%period
@@ -142,7 +142,7 @@ def get_waveform_list(periods,phases,widths):
                 if pair not in pairs and pair[::-1] in master_pairs:
                     pairs[j] = [phase,nadir]
                     triples[int(i*lper+j)] = np.array([period,phase,width])
-                    print pairs[j]                    
+                    #print pairs[j]                    
                     j+=1
 
     triples = np.array(triples,dtype=float)
@@ -152,6 +152,7 @@ def get_waveform_list(periods,phases,widths):
 def make_references(new_header,triples,waveform='cosine'):#,period,phase,width):
     cdef double period,phase,width
     cdef dict dref ={}
+    #print new_header
     for triple in triples:
         period,phase,width = triple
         reference = generate_base_reference(new_header,waveform,period,phase,width)
@@ -185,12 +186,14 @@ def get_stat_probs(dorder,new_header,triples,dref,int size):
 
 def get_matches(kkey,triple,d_ref,new_header):
     cdef double period,phase,width,nadir,tau,p
-    
+
     reference = d_ref[tuple(triple)]
     period,phase,width = triple
     nadir = (phase+width)%period
     #print kkey
+    #print reference
     tau,p = kt(reference,kkey)#generate_mod_series(reference,serie)
+    #print tau,p
     serie = list(kkey)    
     p = p/2.0
     #tau = farctanh(tau)
