@@ -68,18 +68,32 @@ def main(args):
         keys = jtk['Tau']
     else:
         keys = jtk['TauMean']
-    print p0
+    #print p0
+    keys = list(keys)
+    #if 'TauMean' in keys:
+        #print keys.index('TauMean')
+        #print 
+    keys = np.array(list(keys),dtype=float)
 
-    
     empPs = empP(keys,taus)
-    jtk['empP']=empPs
+    jtk.loc[:,'empP']=empPs
 
+    if 'BF' in jtk.columns:
+        empPs = jtk[['BF','empP']].apply(min,axis=1)
+    jtk.loc[:,'empP']=empPs    
+        
     ps = gd.sf(keys)
     jtk['GammaP'] = ps
+
+
+    ps = jtk[['empP','GammaP']].apply(min,axis=1)
+    jtk.loc[:,'GammaP']=ps
+
+    
     jtk['GammaBH'] = list(ssm.multipletests(ps,method='fdr_bh')[1])
     
     fn_out = fn_jtk.replace('.txt','_GammaP.txt')
-    jtk.to_csv(fn_out,sep='\t')
+    jtk.to_csv(fn_out,sep='\t',na_rep=np.nan)
 
     
 def empP(taus,emps):

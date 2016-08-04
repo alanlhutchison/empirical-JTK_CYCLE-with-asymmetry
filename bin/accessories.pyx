@@ -120,8 +120,6 @@ def get_best_match(serie,waveform,triples,dref,new_header):
     best = [serie[0],waveform,r[2],r[3],r[4],r[5],r[6],r[0],r[1]]
     return best
 
-
-
 def get_waveform_list(periods,phases,widths):
     cdef int lper = len(periods)
     cdef int lpha = len(phases)
@@ -161,26 +159,24 @@ def make_references(new_header,triples,waveform='cosine'):#,period,phase,width):
 
 
 
-def get_stat_probs(dorder,new_header,triples,dref,int size):
-    #periods,phases,widths,int size):
-    cdef double period,phase,width,nadir
-    cdef double tau,p
-    cdef double m_tau,s_tau,m_per,s_per,m_ph,s_ph,m_na,s_na
-    cdef out1
-    cdef out2
-    cdef pair
-    #cdef cnp.ndarray pairs = np.zeros((len(phases)*len(widths),2))
-    cdef str waveform = 'cosine'
-    cdef int i,j
-    cdef dict d_taugene,d_pergene,d_phgene,d_nagene 
+#def get_stat_probs(dorder,new_header,triples,dref,int size):
+#    #periods,phases,widths,int size):
+#    cdef double period,phase,width,nadir
+#    cdef double tau,p
+#    cdef double m_tau,s_tau,m_per,s_per,m_ph,s_ph,m_na,s_na
+#    cdef out1
+#    cdef out2
+#    cdef pair
+#    #cdef cnp.ndarray pairs = np.zeros((len(phases)*len(widths),2))
+#    cdef str waveform = 'cosine'
+#    cdef int i,j
+#    cdef dict d_taugene,d_pergene,d_phgene,d_nagene #
 
-    for kkey in dorder:
-        lamb_get_matches = lambda triple: get_matches(kkey,triple,dref,new_header)
-        res = np.array(map(lamb_get_matches,triples))
-        r = pick_best_match(res)
-
-
-    return r
+##    for kkey in dorder:
+#        lamb_get_matches = lambda triple: get_matches(kkey,triple,dref,new_header)
+#        res = np.array(map(lamb_get_matches,triples))
+#        r = pick_best_match(res)
+#    return r
 
 
 
@@ -194,7 +190,7 @@ def get_matches(kkey,triple,d_ref,new_header):
     #print reference
     tau,p = kt(reference,kkey)#generate_mod_series(reference,serie)
     #print tau,p
-    serie = list(kkey)    
+    serie = map(float,list(kkey)    )
     p = p/2.0
     #tau = farctanh(tau)
     maxloc = new_header[serie.index(max(serie))]
@@ -202,7 +198,6 @@ def get_matches(kkey,triple,d_ref,new_header):
     r =  [tau,p,period,phase,nadir,maxloc,minloc]
     if tau < 0:
         r = [np.abs(tau),p,period,nadir,phase,maxloc,minloc]
-    
     return r
 
 def kt(x, y, initial_lexsort=True):

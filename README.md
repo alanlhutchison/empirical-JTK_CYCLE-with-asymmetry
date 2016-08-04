@@ -42,7 +42,6 @@ to compile the Cython code.
 
 
 
-
 1. **example/TestInput4_cos24_ph00-22_by2_a02-22_by2_OTHERTEXT_jtkout.txt**
    This is the output of eJTK.py, it contains the best reference waveform matching each time series. Best is defined as having the highest Tau value. This becomes input for CalcP.py.
 
@@ -55,6 +54,32 @@ to compile the Cython code.
    This is the output of CalcP.py. It is the equivalent of *jtkout.txt, only now with correct p-values as estimated by fitting the time series to a Gamma distribution. It also contains a column of these p-values adjusted with the Benjamini-Hochberg correction.
 
 If you run the above command as is will produce files with a '_1' appended, as these files already exist in the examples folder.
+
+
+## Output information:
+
+The output *jtkout.txt and *GammaP.txt files have columns as described below
+
+ID: Name of time series analyzed
+Waveform: Waveform used in analysis
+Period: Period of best matching reference waveform
+Phase: Phase of best matching reference waveform
+Nadir: Trough of best matching reference waveform
+Mean: Mean of time series
+Std_Dev: Standard Deviation of time series
+MaxLoc: Location of maximum of time series 
+MinLoc: Location of minimum of time series 
+Max: Maximum value of time series
+Min: Minimum value of time series 
+Max_Amp: Max-Min of time series
+FC: Fold Change (Max/Min)
+IQR_FC: Fold Chnage of 25% and 75% percentiles of time series
+Tau: Highest Kendall Tau Correlation between time series and reference waveforms
+P: P-value corresponding to Tau, uncorrected for multiple hypothesis testing
+empP: P-value calculated from empirical null distribution 
+GammaP: P-value calculated from Gamma Fit of empirical null distribution
+GammaBH: Benjmanini-Hochberg adjusted p-value of GammaP
+
 
 ##Version information:
 
