@@ -61,8 +61,11 @@ If you run the above command as is will produce files with a '_1' appended, as t
 The output *jtkout.txt and *GammaP.txt files have columns as described below
 
 ID: Name of time series analyzed
+
 Waveform: Waveform used in analysis
+
 Period: Period of best matching reference waveform
+
 Phase: Phase of best matching reference waveform
 Nadir: Trough of best matching reference waveform
 Mean: Mean of time series
