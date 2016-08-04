@@ -60,28 +60,45 @@ If you run the above command as is will produce files with a '_1' appended, as t
 
 The output *jtkout.txt and *GammaP.txt files have columns as described below
 
-ID: Name of time series analyzed
+**ID**: Name of time series analyzed
 
-Waveform: Waveform used in analysis
+**Waveform**: Waveform used in analysis
 
-Period: Period of best matching reference waveform
+**Period**: Period of best matching reference waveform
 
-Phase: Phase of best matching reference waveform
-Nadir: Trough of best matching reference waveform
-Mean: Mean of time series
-Std_Dev: Standard Deviation of time series
-MaxLoc: Location of maximum of time series 
-MinLoc: Location of minimum of time series 
-Max: Maximum value of time series
-Min: Minimum value of time series 
-Max_Amp: Max-Min of time series
-FC: Fold Change (Max/Min)
-IQR_FC: Fold Chnage of 25% and 75% percentiles of time series
-Tau: Highest Kendall Tau Correlation between time series and reference waveforms
-P: P-value corresponding to Tau, uncorrected for multiple hypothesis testing
-empP: P-value calculated from empirical null distribution 
-GammaP: P-value calculated from Gamma Fit of empirical null distribution
-GammaBH: Benjmanini-Hochberg adjusted p-value of GammaP
+**Phase**: Phase of best matching reference waveform
+
+**Nadir**: Trough of best matching reference waveform
+
+**Mean**: Mean of time series
+
+**Std_Dev**: Standard Deviation of time series
+
+**MaxLoc**: Location of maximum of time series
+
+**MinLoc**: Location of minimum of time series
+
+**Max**: Maximum value of time series
+
+**Min**: Minimum value of time series
+
+**Max_Amp**: Max-Min of time series
+
+**FC**: Fold Change (Max/Min)
+
+**IQR_FC**: Fold Chnage of 25% and 75% percentiles of time series
+
+**Tau**: Highest Kendall Tau Correlation between time series and reference waveforms
+
+**P**: P-value corresponding to Tau, uncorrected for multiple hypothesis testing
+
+**BF**: Bonferroni adjusted P-value from P
+
+**empP**: min(P-value calculated from empirical null distribution,BF)
+
+**GammaP**: min(P-value calculated from Gamma Fit of empirical null distribution,empP)
+
+**GammaBH**: Benjmanini-Hochberg adjusted p-value of GammaP
 
 
 ##Version information:
