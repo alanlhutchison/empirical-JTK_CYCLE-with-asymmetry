@@ -21,8 +21,11 @@ import numpy as np
 import argparse
 import os.path
 
-
-from accessories import get_waveform_list as a_get_waveform_list
+try:
+    from accessories import get_waveform_list as a_get_waveform_list
+except ImportError:
+    print 'Did you run python setup.py build_ext --inplace in the bin directory?'
+    raise
 from accessories import make_references as a_make_references
 from accessories import kt ### this is kendall tau
 from accessories import get_matches as a_get_matches
@@ -74,8 +77,8 @@ def main(args):
     dref = a_make_references(new_header,triples,waveform)
 
     for i,serie in enumerate(series):
-        if [s for s in serie[1:] if s!="NA"]==[]:
-            name = [serie[0]]+["All_NA"]+[-10000]*10+[np.nan,np.nan]
+        if np.nanstd([float(s) for s in serie[1:]])==0:
+            name = [serie[0]]+["All_NA"]+[-10000]*12+[np.nan,np.nan,np.nan]
         else:
             mmax,mmaxloc,mmin,mminloc,MAX_AMP=series_char(serie,header)
             sIQR_FC = IQR_FC(serie)
