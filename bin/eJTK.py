@@ -85,12 +85,12 @@ def main(args):
             smean   = series_mean(serie)
             sstd    = series_std(serie)
             sFC     = FC(serie)
-        best = a_get_best_match(serie,waveform,triples,dref,new_header)
-        geneID,waveform,period,phase,nadir,maxloc,minloc,tau,p = best
-        out_line =     [geneID,waveform,period,phase,nadir,smean,sstd,maxloc,minloc,mmax,mmin,MAX_AMP,sFC,sIQR_FC,tau,p,p*len(triples)]
+            best = a_get_best_match(serie,waveform,triples,dref,new_header)
+            geneID,waveform,period,phase,nadir,maxloc,minloc,tau,p = best
+            out_line =     [geneID,waveform,period,phase,nadir,smean,sstd,maxloc,minloc,mmax,mmin,MAX_AMP,sFC,sIQR_FC,tau,p,p*len(triples)]
 
-        out_line =     [str(l) for l in out_line]
-        out_lines[i] = out_line
+            out_line =     [str(l) for l in out_line]
+            out_lines[i] = out_line
 
     with open(fn_out,'w') as g:
         g.write("ID\tWaveform\tPeriod\tPhase\tNadir\tMean\tStd_Dev\tMaxLoc\tMinLoc\tMax\tMin\tMax_Amp\tFC\tIQR_FC\tTau\tP\tBF\n")
