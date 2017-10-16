@@ -6,7 +6,7 @@ This is the README for running the rhythm detection method described in [Hutchis
 
 It is based on the original JTK_CYCLE code from [Hughes ME, Hogenesch JB, Kornacker K. JTK_CYCLE: an efficient nonparametric algorithm for detecting rhythmic components in genome-scale data sets. J Biol Rhythms. 2010 Oct;25(5):372-80. doi:10.1177/0748730410379711.](http://jbr.sagepub.com/content/25/5/372)
 
-A previous version of this method empirically calculated the p-values using many permutations. We have recently sped up this calculation by approximating the null tau distribution using a Gamma distribution based on 1000 permutations. P-values can be derived from this model, allowing for p-values independent of the number of permutations. The description of this code can be found in [Hutchison AL _et al._ (2016), "BooteJTK: Improved Rhythm Detection via Bootstrapping"](), available at bioRxiv.
+A previous version of this method empirically calculated the p-values using many permutations. We have recently sped up this calculation by approximating the null tau distribution using a Gamma distribution based on 1000 permutations. P-values can be derived from this model, allowing for p-values independent of the number of permutations. The description of this code can be found in [Hutchison AL _et al._ (2016), "BooteJTK: Improved Rhythm Detection via Bootstrapping"](http://www.biorxiv.org/content/early/2017/03/20/118521), available at bioRxiv.
 
 
 ##Applications:
