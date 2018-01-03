@@ -114,6 +114,7 @@ def get_best_match(serie,waveform,triples,dref,new_header):
     best = [serie[0],'cosine',0.,0.,0.,0.,1.]
     #print serie[0]
     lamb_get_matches = lambda triple: get_matches(serie[1:],triple,dref,new_header)
+    ### This 'res' is the array with the p-values we want
     res = np.array(map(lamb_get_matches,triples))
 
     r = pick_best_match(res)
@@ -126,24 +127,30 @@ def get_waveform_list(periods,phases,widths):
     cdef int lwid = len(widths)
     #cdef np.ndarray
     triples = np.zeros((int(lper*lpha*lwid/2),3))
-    cdef int i,j
+    cdef int i,j,k
     cdef int period,phase,width,nadir
+    k = 0
     for i,period in enumerate(periods):
         j = 0
         pairs = [[0,0]]*int(lpha*lwid/2)
-        master_pairs = [[phase,(phase+width)%period] for phase in phases for width in widths]
+        phases1 = [phase for phase in phases if phase <=period]
+        widths1 = [width for width in widths if width < period]
+        master_pairs = [[phase,(phase+width)%period] for phase in phases1 for width in widths1]
         #print len(master_pairs),master_pairs
         for phase in phases:
-            for width in widths:
-                nadir = (phase+width)%period
-                pair = [nadir,phase]
-                if pair not in pairs and pair[::-1] in master_pairs:
-                    pairs[j] = [phase,nadir]
-                    triples[int(i*lper+j)] = np.array([period,phase,width])
-                    #print pairs[j]                    
-                    j+=1
-
+            if phase <= period:
+                for width in widths:
+                    if width < period:
+                        nadir = (phase+width)%period
+                        pair = [nadir,phase]
+                        if pair not in pairs and pair[::-1] in master_pairs:
+                            pairs[j] = [phase,nadir]
+                            triples[k] = np.array([period,phase,width])
+                            #print pairs[j]                    
+                            j+=1
+                            k+=1
     triples = np.array(triples,dtype=float)
+    triples = triples[:k,:]
     return triples
 
 

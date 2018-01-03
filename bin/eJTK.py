@@ -69,6 +69,8 @@ def main(args):
     #if 
     
     triples = a_get_waveform_list(periods,phases,widths)
+
+            
     #print triples
     
     
