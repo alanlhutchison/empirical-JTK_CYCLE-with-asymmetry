@@ -78,6 +78,8 @@ def main(args):
     
     dref = a_make_references(new_header,triples,waveform)
 
+    #for key in  sorted(dref.keys()):
+    #    print key, key[1], key[1]+key[2]
     for i,serie in enumerate(series):
         if np.nanstd([float(s) for s in serie[1:]])==0:
             name = [serie[0]]+["All_NA"]+[-10000]*12+[np.nan,np.nan,np.nan]
@@ -88,6 +90,7 @@ def main(args):
             sstd    = series_std(serie)
             sFC     = FC(serie)
             best = a_get_best_match(serie,waveform,triples,dref,new_header)
+            #print best
             geneID,waveform,period,phase,nadir,maxloc,minloc,tau,p = best
             out_line =     [geneID,waveform,period,phase,nadir,smean,sstd,maxloc,minloc,mmax,mmin,MAX_AMP,sFC,sIQR_FC,tau,p,p*len(triples)]
 

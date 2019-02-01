@@ -87,6 +87,7 @@ def pick_best_match(res):
     tau_mask = (max(taus)==taus)
     if np.sum(tau_mask)==1:
         ind = list(tau_mask).index(True)
+        #print res[ind]
         return res[ind]
 
     res = res[tau_mask]
@@ -116,9 +117,10 @@ def get_best_match(serie,waveform,triples,dref,new_header):
     lamb_get_matches = lambda triple: get_matches(serie[1:],triple,dref,new_header)
     ### This 'res' is the array with the p-values we want
     res = np.array(map(lamb_get_matches,triples))
-
+    #print res
     r = pick_best_match(res)
     best = [serie[0],waveform,r[2],r[3],r[4],r[5],r[6],r[0],r[1]]
+    #print best
     return best
 
 def get_waveform_list(periods,phases,widths):
@@ -160,6 +162,8 @@ def make_references(new_header,triples,waveform='cosine'):#,period,phase,width):
     #print new_header
     for triple in triples:
         period,phase,width = triple
+
+            
         reference = generate_base_reference(new_header,waveform,period,phase,width)
         dref[(period,phase,width)] = reference
     return dref
@@ -195,16 +199,26 @@ def get_matches(kkey,triple,d_ref,new_header):
     nadir = (phase+width)%period
     #print kkey
     #print reference
+    reference = map(float,reference)
+    kkey = map(float,kkey)
     tau,p = kt(reference,kkey)#generate_mod_series(reference,serie)
-    #print tau,p
+    #print period,phase,nadir,tau,p
+    #print reference, kkey
+    #print kt(map(float,reference),map(float,kkey))
     serie = map(float,list(kkey)    )
     p = p/2.0
     #tau = farctanh(tau)
     maxloc = new_header[serie.index(max(serie))]
     minloc = new_header[serie.index(min(serie))]
+    #print tau
     r =  [tau,p,period,phase,nadir,maxloc,minloc]
-    if tau < 0:
-        r = [np.abs(tau),p,period,nadir,phase,maxloc,minloc]
+    #print r
+    if float(tau) < 0:
+        #print r
+        r = [float(np.abs(tau)),p,period,nadir,phase,maxloc,minloc]
+        #print r
+    #print r
+    #print ''
     return r
 
 def kt(x, y, initial_lexsort=True):
